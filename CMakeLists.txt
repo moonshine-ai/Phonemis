@@ -43,6 +43,3 @@ target_link_libraries(test_tokenizer phonemis)
 
 add_executable(test_pipeline test/test_pipeline.cpp)
 target_link_libraries(test_pipeline phonemis)
-
-add_executable(batch_phonemize test/batch_phonemize.cpp)
-target_link_libraries(batch_phonemize phonemis)

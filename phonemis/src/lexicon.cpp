@@ -140,7 +140,7 @@ std::u32string Lexicon::stem_s(const std::string& word,
   // Adjust phonemization according to selected language rules.
   // https://en.wiktionary.org/wiki/-s
   static const std::u32string hard_s_suffixes = U"ptkfθ";
-  static const std::u32string soft_s_suffixes = U"szʃʒʧʤ";
+  static const std::u32string soft_s_suffixes = U"szʃʒ";
   if (hard_s_suffixes.find(phonemes.back()) != std::u32string::npos)
     return phonemes + U"s";
   if (soft_s_suffixes.find(phonemes.back()) != std::u32string::npos)
@@ -171,7 +171,7 @@ std::u32string Lexicon::stem_ed(const std::string& word,
 
   // Adjust phonemization according to selected language rules.
   // https://en.wiktionary.org/wiki/-ed
-  static const std::u32string soft_d_suffixes = U"pkfθʃsʧ";
+  static const std::u32string soft_d_suffixes = U"pkfθʃs";
   if (soft_d_suffixes.find(phonemes.back()) != std::u32string::npos)
     return phonemes + U"t";
   if (phonemes.back() == U'd')
@@ -302,7 +302,7 @@ Lexicon::lookup_special(const std::string& word,
            max_subword_size < 3)
     return lookup_nnp(word);
   else if (is_single_char && (word[0] == 'a' || word[0] == 'A'))
-    return tag == "DT" ? U"ɐ" : U"ˈA";
+    return tag == "DT" ? U"ɐ" : U"ˈeɪ";
   else if (word == "am" || word == "Am" || word == "AM") {
     if (string_utils::starts_with(tag, "NN"))
       return lookup_nnp(word);
@@ -314,9 +314,9 @@ Lexicon::lookup_special(const std::string& word,
   else if (word == "an" || word == "An" || word == "AN")
     return word == "AN" && string_utils::starts_with(tag, "NN") ? lookup_nnp(word) : U"ɐn";
   else if (is_single_char && word[0] == 'I' && tag == "PRP")
-    return std::u32string(1, constants::stress::kSecondary) + U"I";
+    return std::u32string(1, constants::stress::kSecondary) + U"aɪ";
   else if ((word == "by" || word == "By" || word == "BY") && tag.parent_tag() == "ADV")
-    return U"bˈI";
+    return U"bˈaɪ";
   else if (word == "to" || word == "To" || word == "TO" && (tag == "TO" || tag == "IN"))
     return !vowel_next.has_value() ? dict_.at("to") :
            vowel_next.value() ? U"tʊ" : U"tə";

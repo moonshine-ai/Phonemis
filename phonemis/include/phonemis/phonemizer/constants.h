@@ -55,9 +55,9 @@ kCurrencies = {
 
 // Language (spoken) constants
 namespace language {
-inline const std::u32string kVowels = U"AIOQWYaiuæɑɒɔəɛɜɪʊʌᵻ";  // Spoken vowels
-inline const std::u32string kConsonants = U"bdfhjklmnpstvwzðŋɡɹɾʃʒʤʧθ"; // Spoken consosants
-inline const std::u32string kUSTaus = U"AIOWYiuæɑəɛɪɹʊʌ";
+inline const std::u32string kVowels = U"Qaeiouæɑɒɔəɛɜɪʊʌᵻɐɚ";  // Spoken vowels
+inline const std::u32string kConsonants = U"bdfhjklmnpstvwzðŋɡɹɾʃʒθ"; // Spoken consonants
+inline const std::u32string kUSTaus = U"aeiouæɑəɛɪɹʊʌɐɚ";
 } // namespace language
 
 // Stress calculation constants

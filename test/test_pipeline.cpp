@@ -8,13 +8,10 @@ using namespace phonemis;
 using namespace phonemis::utilities;
 
 int main() {
-  std::string TAGGER_DATA_PATH = "../data/hmm.json";
-  std::string LEXICON_DATA_PATH = "../data/dictionaries/us_merged.json";
-
   // const std::string text = "I love it! This is the best day of my entire life.";
   const std::string text = "Damian cloud is a real beast! He is the 66th of the raiders!";
 
-  Pipeline pipeline(Lang::EN_US, TAGGER_DATA_PATH, LEXICON_DATA_PATH);
+  Pipeline pipeline(Lang::EN_US);
   auto phonemes = pipeline.process(text);
 
   std::cout << "Text: " << text << "\n";

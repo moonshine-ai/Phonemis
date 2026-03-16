@@ -8,9 +8,8 @@ namespace phonemis::phonemizer {
 
 using namespace utilities;
 
-Phonemizer::Phonemizer(Lang language, const std::string& lexicon_filepath) {
-  if (!lexicon_filepath.empty())
-    lexicon_ = std::make_unique<Lexicon>(language, lexicon_filepath);
+Phonemizer::Phonemizer(Lang language) {
+  lexicon_ = std::make_unique<Lexicon>(language);
 }
 
 std::u32string 

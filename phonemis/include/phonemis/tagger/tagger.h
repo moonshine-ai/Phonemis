@@ -15,7 +15,8 @@ namespace phonemis::tagger {
 // A modification of the Viterbi algorithm for bigram HMM (Hidden Markov Model) tagger.
 class Tagger {
 public:
-  explicit Tagger(const std::string& hmm_data_path);
+  // Loads HMM data from compiled-in embedded data
+  Tagger();
 
   // Main tagging method - a modified Viterbi algorithm
   // Works in place bo modyfing the 'tag' fields.

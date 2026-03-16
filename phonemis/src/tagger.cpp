@@ -1,51 +1,29 @@
 #include <phonemis/tagger/tagger.h>
-#include <phonemis/utilities/io_utils.h>
+#include <phonemis/data/embedded_data.h>
 #include <algorithm>
-#include <filesystem>
-#include <fstream>
 #include <stdexcept>
 
 namespace phonemis::tagger {
 
-Tagger::Tagger(const std::string& hmm_data_path) {
-	// Load the input JSON file
-	nlohmann::json json_obj = utilities::io_utils::load_json(hmm_data_path);
-
-	// Validate required top-level fields
-	if (!json_obj.contains("start_prob") || !json_obj.contains("emission") || !json_obj.contains("transition")) {
-		throw std::invalid_argument("JSON missing required fields: start_prob, emission, transition");
-	}
-	if (!json_obj["start_prob"].is_object() || !json_obj["emission"].is_object() || !json_obj["transition"].is_object()) {
-		throw std::invalid_argument("JSON fields must be objects: start_prob, emission, transition");
+Tagger::Tagger() {
+	// Load start probabilities from embedded data
+	for (const auto& [tag_sv, prob] : data::get_hmm_start_prob()) {
+		const Tag tag{std::string(tag_sv)};
+		tags_.insert(tag);
+		start_probs_[tag] = prob;
 	}
 
-	// Load start probabilities
-  // We can simultaneously load all the possible tags here, since
-  // all the tags must appear in start_prob field of the JSON file.
-	for (auto& item : json_obj["start_prob"].items()) {
-		const Tag tag = item.key();
-    tags_.insert(tag);
-		start_probs_[tag] = item.value().get<double>();
+	// Load emission probabilities from embedded data
+	for (const auto& entry : data::get_hmm_emission()) {
+		const Tag tag{std::string(entry.key1)};
+		emission_probs_[tag][std::string(entry.key2)] = entry.value;
 	}
 
-	// Load emission probabilities
-	for (auto& tag_item : json_obj["emission"].items()) {
-		const Tag tag = tag_item.key();
-		const auto& inner = tag_item.value();
-		if (!inner.is_object()) continue;
-		for (auto& w : inner.items()) {
-			emission_probs_[tag][w.key()] = w.value().get<double>();
-		}
-	}
-
-	// Load transition probabilities
-	for (auto& tag_item : json_obj["transition"].items()) {
-		const Tag tag = tag_item.key();
-		const auto& inner = tag_item.value();
-		if (!inner.is_object()) continue;
-		for (auto& t : inner.items()) {
-			transition_probs_[tag][t.key()] = t.value().get<double>();
-		}
+	// Load transition probabilities from embedded data
+	for (const auto& entry : data::get_hmm_transition()) {
+		const Tag from_tag{std::string(entry.key1)};
+		const Tag to_tag{std::string(entry.key2)};
+		transition_probs_[from_tag][to_tag] = entry.value;
 	}
 }
 

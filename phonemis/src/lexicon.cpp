@@ -1,10 +1,8 @@
 #include <phonemis/phonemizer/lexicon.h>
 #include <phonemis/phonemizer/constants.h>
 #include <phonemis/phonemizer/stress.h>
-#include <phonemis/utilities/io_utils.h>
+#include <phonemis/data/embedded_data.h>
 #include <phonemis/utilities/string_utils.h>
-#include <filesystem>
-#include <fstream>
 #include <numeric>
 #include <regex>
 #include <stdexcept>
@@ -15,21 +13,12 @@ namespace phonemis::phonemizer {
 
 using namespace utilities;
 
-Lexicon::Lexicon(Lang language, const std::string& dict_filepath)
+Lexicon::Lexicon(Lang language)
   : language_(language) {
-  // Load the input JSON file
-	auto json_obj = io_utils::load_json(dict_filepath);
-
-  // We assume that loaded JSON file is in plain string: string format
-  for (auto& item : json_obj.items()) {
-    const std::string text = item.key();
-    const auto& phonemes = item.value();
-
-    if (!phonemes.is_string())
-      throw std::invalid_argument("Unexpected JSON structure in file " + dict_filepath);
-    
-    // Convert the value to u32string and add the entry
-    auto phonemes_u32 = string_utils::utf8_to_u32string(phonemes.get<std::string>());
+  // Load from compiled-in embedded data
+  for (const auto& [text_sv, phonemes_sv] : data::get_lexicon_data()) {
+    const std::string text{text_sv};
+    auto phonemes_u32 = string_utils::utf8_to_u32string(std::string{phonemes_sv});
     dict_[text] = phonemes_u32;
 
     // In order to make the vocab less case-sensitive, we expand it with 

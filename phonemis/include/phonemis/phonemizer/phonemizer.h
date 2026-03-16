@@ -9,8 +9,7 @@ namespace phonemis::phonemizer {
 // Combines lexicon lookup-style phonemization with rule-based fallback
 class Phonemizer {
 public:
-  Phonemizer(Lang language, 
-             const std::string& lexicon_filepath = "");
+  explicit Phonemizer(Lang language);
   
   // Main phonemization method
   std::u32string phonemize(const std::string& word,

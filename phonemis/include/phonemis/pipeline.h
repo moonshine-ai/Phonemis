@@ -19,9 +19,7 @@ using tagger::Tagger;
 // skipping these arguments will significantly impact the phonemization quality.
 class Pipeline {
 public:
-  Pipeline(Lang language,
-           const std::string& tagger_data_filepath = "",
-           const std::string& lexicon_data_filepath = "");
+  explicit Pipeline(Lang language);
   
   std::u32string process(const std::string& text);
 

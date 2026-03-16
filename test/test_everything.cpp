@@ -11,10 +11,6 @@
 using namespace phonemis;
 
 int main() {
-
-  std::string FILEPATH = "../data/hmm.json";
-  std::string LEXICON_PATH = "../data/dictionaries/us_merged.json";
-
   std::string text = "It's a great feeling to be a part of the 12th company! I am so proud of me.";
 
   // Preprocess the text
@@ -34,14 +30,14 @@ int main() {
     std::cout << "Token: " << token.text << ", is_first? " << token.is_first << ", whitespace size: " << token.whitespace.size() << "\n";
   }
   
-  auto tagger = std::make_unique<tagger::Tagger>(FILEPATH);
+  auto tagger = std::make_unique<tagger::Tagger>();
   tagger->tag(tokens);
   std::cout << "[After tag]\n";
   for (const auto& token : tokens) {
     std::cout << "Token: " << token.text << ", tag: " << token.tag.value() << "\n";
   }
 
-  auto lexicon = std::make_unique<phonemizer::Lexicon>(phonemizer::Lang::EN_US, LEXICON_PATH);
+  auto lexicon = std::make_unique<phonemizer::Lexicon>(phonemizer::Lang::EN_US);
   std::cout << "\nPhonemizing...\n\n";
   for (const auto& token : tokens) {
     auto phonemes = lexicon->get(token.text, token.tag.value());

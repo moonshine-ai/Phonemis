@@ -11,14 +11,10 @@ using phonemizer::constants::language::kVowels;
 using phonemizer::constants::language::kConsonants;
 using tagger::Tag;
 
-Pipeline::Pipeline(Lang language,
-                   const std::string& tagger_data_filepath,
-                   const std::string& lexicon_data_filepath)
+Pipeline::Pipeline(Lang language)
   : language_(language) {
-  if (!tagger_data_filepath.empty())
-    tagger_ = std::make_unique<Tagger>(tagger_data_filepath);
-  
-  phonemizer_ = std::make_unique<Phonemizer>(language, lexicon_data_filepath);
+  tagger_ = std::make_unique<Tagger>();
+  phonemizer_ = std::make_unique<Phonemizer>(language);
 }
 
 // TODO: It works fine, but there are still some missing parts

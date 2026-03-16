@@ -10,10 +10,11 @@ namespace phonemis::phonemizer {
 
 // Lexicon class
 // Provides phonemization of extracted tokens.
-// Wrapps a dictionary lookup for given word with additional pre/post-processing.
+// Wraps a dictionary lookup for given word with additional pre/post-processing.
 class Lexicon {
 public:
-  Lexicon(Lang language, const std::string& dict_filepath);
+  // Loads lexicon from compiled-in embedded data
+  explicit Lexicon(Lang language);
 
   // Checks if given world exists in the lexicon in any form
   bool is_known(const std::string& word) const;
